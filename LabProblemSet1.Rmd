@@ -101,7 +101,7 @@ groupeddata <- combined_data %>%
 groupeddata
 ```
 
-##Creating Heat Map 
+##Creating Heat Maps 
 ```{r}
 birthsheatmap <- ggplot(groupeddata, aes(date_of_month, month)) +
   geom_tile(aes(fill = Avg_Births))
