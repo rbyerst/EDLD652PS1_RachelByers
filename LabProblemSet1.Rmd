@@ -13,6 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r educationdata}
 install.packages("educationdata")
+install.packages("dplyr")
+install.packages("forcats")
 ```
 
 ## Loading Packages 
@@ -20,6 +22,8 @@ install.packages("educationdata")
 library(educationdata)
 library(ggplot2)
 library(tidyverse)
+library(dplyr)
+library(forcats)
 ```
 
 ## Endpoint Information
@@ -62,4 +66,56 @@ density2 <- ggplot(enrollmentdata, aes(enrollment)) +
                bw = 1000) 
 density2
 ```
+
+## Re-loading births dataset from Lab 2
+```{r}
+firsthalf <- read.csv("C:\\Users\\missm\\Downloads\\US_births_1994-2003_CDC_NCHS.csv")
+firsthalfdata <- data.frame(firsthalf)
+firsthalfdata <- firsthalfdata[!(firsthalfdata$year %in% c("2000", "2001", "2002", "2003")), ]
+secondhalf <- read.csv("C:\\Users\\missm\\Downloads\\US_births_2000-2014_SSA.csv")
+secondhalfdata <- data.frame(secondhalf)
+summary(secondhalfdata)
+summary(firsthalfdata)
+combined_data <- rbind(firsthalfdata, secondhalfdata)
+summary(combined_data)
+combined_data$month <- factor(
+ combined_data$month,
+ levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12),
+ labels = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+)
+combined_data$day_of_week <- factor(
+ combined_data$day_of_week,
+ levels = c(1, 2, 3, 4, 5, 6, 7),
+ labels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+)
+tibble(combined_data)
+```
+
+## Grouping and Summarizing
+```{r}
+groupeddata <- combined_data %>%
+  group_by(month, date_of_month) %>%
+  summarise(
+    Avg_Births = mean(births)
+  )
+groupeddata
+```
+
+##Creating Heat Map 
+```{r}
+birthsheatmap <- ggplot(groupeddata, aes(date_of_month, month)) +
+  geom_tile(aes(fill = Avg_Births))
+birthsheatmap
+birthsheatmap2 <- ggplot(groupeddata, aes(date_of_month, month)) +
+  geom_tile(aes(fill = Avg_Births)) +
+  scale_fill_viridis_c(option = "magma")
+birthsheatmap2
+birthsheatmap3 <- ggplot(groupeddata, aes(date_of_month, fct_reorder(month, Avg_Births))) +
+  geom_tile(aes(fill = Avg_Births)) +
+  scale_fill_viridis_c(option = "magma")
+birthsheatmap3
+```
+
+
+
 
