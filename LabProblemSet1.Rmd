@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+author: "Rachel Byers"
+date: "2026-01-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Installing Eudcation Data Package
+
+```{r educationdata}
+install.packages("educationdata")
+```
+
+## Loading Packages 
+```{r warning = FALSE}
+library(educationdata)
+library(ggplot2)
+library(tidyverse)
+```
+
+## Endpoint Information
+#https://educationdata.urban.org/api/v1/{topic}/{source}/{endpoint}/{year}/[additional_specifiers _or_disaggregators]/[optional filters]
+```{r}
+df <- get_education_data(level = 'schools', 
+                         source = 'ccd', 
+                         topic = 'enrollment', 
+                         subtopic = list('race', 'sex'),
+                         filters = list(year = 2008,
+                                        grade = 9:12,
+                                        ncessch = '340606000122'),
+                         add_labels = TRUE)
+```
+
+## Data Frame
+```{r}
+
+```
+
+
