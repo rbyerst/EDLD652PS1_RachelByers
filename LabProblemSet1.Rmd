@@ -2,23 +2,26 @@
 title: "Lab Problem Set 1"
 author: "Rachel Byers"
 date: "2026-01-19"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, results = "hide")
+options(repos=c(CRAN="https://cran.r-project.org"))
 ```
 
 ## Installing Eudcation Data Package
 
-```{r educationdata}
+```{r educationdata, message = FALSE}
 install.packages("educationdata")
 install.packages("dplyr")
 install.packages("forcats")
 ```
 
 ## Loading Packages 
-```{r warning = FALSE}
+```{r warning = FALSE, message = FALSE}
 library(educationdata)
 library(ggplot2)
 library(tidyverse)
@@ -31,18 +34,13 @@ library(forcats)
 #https://github.com/UrbanInstitute/education-data-package-r
 
 ## Creating Data Frame
-```{r}
+```{r warning = FALSE}
 enrollmentdata <- get_education_data(level = 'schools', 
                          source = 'ccd', 
                          topic = 'enrollment',
                          filters = list(year = 2022,
                                         grade = 'grade-99'))
 head(enrollmentdata)
-```
-
-## Data Frame
-```{r}
-
 ```
 
 ## Enrollment Data Plots
