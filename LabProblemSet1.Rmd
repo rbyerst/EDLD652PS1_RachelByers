@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Lab Problem Set 1"
 author: "Rachel Byers"
 date: "2026-01-19"
 output: html_document
@@ -24,15 +24,16 @@ library(tidyverse)
 
 ## Endpoint Information
 #https://educationdata.urban.org/api/v1/{topic}/{source}/{endpoint}/{year}/[additional_specifiers _or_disaggregators]/[optional filters]
+#https://github.com/UrbanInstitute/education-data-package-r
+
+## Creating Data Frame
 ```{r}
-df <- get_education_data(level = 'schools', 
+enrollmentdata <- get_education_data(level = 'schools', 
                          source = 'ccd', 
-                         topic = 'enrollment', 
-                         subtopic = list('race', 'sex'),
-                         filters = list(year = 2008,
-                                        grade = 9:12,
-                                        ncessch = '340606000122'),
-                         add_labels = TRUE)
+                         topic = 'enrollment',
+                         filters = list(year = 2022,
+                                        grade = 'grade-99'))
+head(enrollmentdata)
 ```
 
 ## Data Frame
@@ -40,4 +41,25 @@ df <- get_education_data(level = 'schools',
 
 ```
 
+## Enrollment Data Plots
+```{r}
+histo1 <- ggplot(enrollmentdata, aes(x = enrollment)) +
+  geom_histogram(fill = "#56B4E9",
+                 color = "white",
+                 bins = 10)
+histo1
+histo2 <- ggplot(enrollmentdata, aes(x = enrollment)) +
+  geom_histogram(fill = "red",
+                 color = "white",
+                 bins = 50)
+histo2
+density1 <- ggplot(enrollmentdata, aes(enrollment)) +
+  geom_density(fill = "#56B4E9",
+               bw = 5)
+density1
+density2 <- ggplot(enrollmentdata, aes(enrollment)) +
+  geom_density(fill = "#56B4E9",
+               bw = 1000) 
+density2
+```
 
